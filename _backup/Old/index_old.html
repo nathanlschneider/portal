@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>IT HelpDesk Portal</title>
+      <link href="css/style.css" rel="stylesheet" type="text/css" />
+      <link href="css/bootstrap.min.css" rel="stylesheet" />
+      <link href="css/custom.css" rel="stylesheet" />
+      <style>
+         table {
+         border-collapse: collapse;
+         width: 80%;
+         }
+         td, th {
+         border: 0px solid #eee;
+         }
+         tr:nth-child(even) {
+         background-color: #eee;
+         }
+      </style>
+      <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+      <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+      <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+      <![endif]-->
+      <script src = 'http://mhg-heat-web/HEAT/Modules/HEATAPI/HEATApiClient?clientId=PORTAL&clientKey==8FRPgaPuPhuGwxK9mwfVX4PHVP0t24PwpgxL3ou3lw='> </script> 
+      <script> 
+         function logout() {
+           HEATAPI.Auth.signOut(function(data) {
+           document.getElementById('myItems').innerHTML = "<ul>" + data + "</ul>";
+           });
+      } </script>
+   </head>
+
+   <body>
+      <!-- Navigation -->
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+         <div class="container">
+            <!-- Logo and responsive toggle -->
+            <div class="navbar-header">
+               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+               <span class="sr-only">Toggle navigation</span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               <span class="icon-bar"></span>
+               </button>
+               <a class="navbar-brand" href="#">IT HelpDesk Portal</a>
+            </div>
+            <!-- Navbar links -->
+            <div class="collapse navbar-collapse" id="navbar">
+               <ul class="nav navbar-nav">
+                  <li class="active">
+                     <a href="#">Tickets</a>
+                  </li>
+                  <li>
+                     <a href="#">Contact</a>
+                  </li>
+                  <li>
+                     <a href="#">Knowledge Base</a>
+                  </li>
+                  <li>
+                     <a href="#">Links</a>
+                  </li>
+                  <li>
+                     <a onclick="logout()" href="#"> Email</a>
+                  </li>
+               </ul>
+               <!-- Log In Form -->
+               <form class="navbar-form navbar-right">
+                  <div id="userInfo" class="form-group">
+                     <script>
+                        HEATAPI.Auth.getSignInfo(function(data) {
+                        if (data.authentication = "yes") {
+                        document.getElementById('userInfo').innerHTML =
+                        "Hello, " + data.login + "! ";
+                        }
+                        })
+                     </script>
+                  </div>
+                  <button type="submit" class="btn btn-default" onclick="logout()"> Logout</button>
+               </form>
+            </div>
+            <!-- /.navbar-collapse -->
+         </div>
+         <!-- /.container -->
+      </nav>
+      <div class="header-blurb"></div>
+      
+       <script> HEATAPI.MyItems.GetMyItemsList(10, function(data) {
+   var summary = [];
+   var cstatus = [];
+   var cdate = [];
+   var inc = 0;
+   var statusColored = "";
+   for (var i in data.data) {
+      var astatus = data.data[i].status;
+      if (data.data[i].status == "Logged") {
+         statusColored = astatus.fontcolor("orange");
+      }
+      if (data.data[i].status == "Active") {
+         statusColored = astatus.fontcolor("red");
+      }
+      if (data.data[i].status == "Resolved") {
+         statusColored = astatus.fontcolor("green");
+      }
+      summary[i] = "<a href='" + data.data[i].link + "' target='_blank'><span id='tableLink'>" + data.data[i].summary + " </span></a>";
+      cstatus[i] = statusColored;
+      cdate[i] = data.data[i].createdOn;
+   };
+   var table = document.createElement('table'),
+      th, tr, td, row, cell, heada;
+   for (row = -1; row < i; row++) {
+      tr = document.createElement('tr');
+      for (cell = 0; cell < 1; cell++) {
+         td = document.createElement('td');
+         tr.appendChild(td);
+         td.innerHTML = summary[inc];
+      }
+      for (cell = 0; cell < 1; cell++) {
+         td = document.createElement('td');
+         tr.appendChild(td);
+         td.innerHTML = cstatus[inc];
+      }
+      for (cell = 0; cell < 1; cell++) {
+         td = document.createElement('td');
+         tr.appendChild(td);
+         td.innerHTML = cdate[inc];
+      }
+      inc++;
+      table.appendChild(tr);
+   }
+   document.getElementById('lfloat').appendChild(table);
+}); 
+          </script>
+      
+      
+      
+      
+      
+      
+   <div id="lfloat">Ticket History</div>
+        <div id="rfloat">Submit a Ticket
+          <form name="form1" method="post" action="">
+            <p>
+              <label for="summaryTicket"></label>
+              <input type="text" name="summaryTicket" id="summaryTicket">
+            <br>
+              <label for="categoryTicket"></label>
+              <select name="categoryTicket" id="categoryTicket">
+              </select>
+              <br>
+              <label for="descTicket"></label>
+              <textarea name="descTicket" id="descTicket"></textarea>
+            </p>
+          </form>
+        </div>
+           
+  
+   <div class="footer-blurb"></div>
+      <!-- jQuery -->
+   <script src="js/jquery-1.11.3.min.js"></script>
+         
+         <!-- Bootstrap Core JavaScript -->
+   <script src="js/bootstrap.min.js"></script>
+         
+         <!-- IE10 viewport bug workaround -->
+   <script src="js/ie10-viewport-bug-workaround.js"></script><script src="js/holder.min.js"></script>
+      
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+   jQuery(document).ready(function($) {
+      $.ajax({
+         url: "http://api.aerisapi.com/observations/rockford,mi?client_id=oFtDXJ7fuyeJJb5FOinZg&client_secret=rB2XyBhhOZOPgyNAk9xUuUT1qPHOj9AOemlcJMQq",
+         dataType: "jsonp",
+         success: function(json) {
+            if (json.success == true) {
+               var ob = json.response.ob;
+               alert('The current weather in Rockford is ' + ob.weather.toLowerCase() + ' with a temperature of ' + ob.tempF + '*');
+            }
+            else {
+               alert('An error occurred: ' + json.error.description);
+            }
+         }
+      });
+   });
+   </script>
+   </body>
+   </html>

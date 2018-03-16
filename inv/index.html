@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>MHGI Inventory Submission</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/auto-complete.css" />
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/actions.js"></script>  
+    <script src="js/auto-complete.js"></script> 
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.rawgit.com/serratus/quaggaJS/0420d5e0/dist/quagga.min.js" async></script> 
+    <style>
+           canvas.drawing, canvas.drawingBuffer {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+        </style>   
+</head>
+
+<body>
+<div id="scanner-container"></div>
+    <div class="container">
+        <h3 onclick="wut();">Inventory</h3>
+        <div class="form-group">             
+            <input type="text" class="form-control" id="possessor" placeholder="Possessor Search..." name="q" autofocus> 
+            <script>
+                    var demo1 = new autoComplete({
+                        selector: '#possessor',
+                        minChars: 1,
+                        source: function(term, suggest){
+                            term = term.toLowerCase();
+                            var suggestions = [];
+                            for (i=0;i<choices.length;i++)
+                                if (~choices[i].toLowerCase().indexOf(term)) suggestions.push(choices[i]);
+                            suggest(suggestions);
+                        }
+                    });
+                        </script>
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle form-control" type="button" data-toggle="dropdown" id="btnType">Type
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="javascript:btnType('Register');">Register</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('Computer');">Computer</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('Router');">Router</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('Firewall');">Firewall</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('Training Computer');">Training Computer</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('UPS');">UPS</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('Keyboard');">Keyboard</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('KVS');">KVS</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('Modem');">Modem</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('Monitor');">Monitor</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('Mouse');">Mouse</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('Network Switch');">Network Switch</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('Ooma');">Ooma</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('POS Printer');">POS Printer</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('Office Printer');">Office Printer</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('Security Camera');">Security Camera</a>
+                </li>
+                <li>
+                    <a href="javascript:btnType('DVR');">DVR</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle form-control" type="button" data-toggle="dropdown" id="btnBrand">Brand
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="brandContent">
+            </ul>
+        </div>
+
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle form-control" type="button" data-toggle="dropdown" id="btnModel">Model
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="modelContent">
+
+            </ul>
+        </div>
+        <!--<div class="dropdown">
+            <button class="btn btn-default dropdown-toggle form-control" type="button" data-toggle="dropdown" id="btnPossesor">Possesor
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                    <span id="posessorContent">
+                           
+                         </span>
+            </ul>
+        </div> -->
+        <div class="dropdown">
+            <button class="btn btn-default dropdown-toggle form-control" type="button" data-toggle="dropdown" id="btnLocation">Location
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="javascript:btnLocation('Onsite');">Onsite</a>
+                </li>
+                <li>
+                    <a href="javascript:btnLocation('Warehouse');">Warehouse</a>
+                </li>
+                <li>
+                    <a href="javascript:btnLocation('Accounting');">Accounting</a>
+                </li>
+                <li>
+                    <a href="javascript:btnLocation('Human Resources');">Human Resources</a>
+                </li>
+                <li>
+                    <a href="javascript:btnLocation('Returned');">Returned</a>
+                </li>
+                <li>
+                    <a href="javascript:btnLocation('Risk');">Risk</a>
+                </li>
+                <li>
+                    <a href="javascript:btnLocation('RSC');">RSC</a>
+                </li>
+                <li>
+                    <a href="javascript:btnLocation('Supply Room');">Supply Room</a>
+                </li>
+            </ul>
+        </div>
+       <!-- <button type="button" class="btn btn-info form-control" id="scanCode" onclick="javascript:scanCodes();">Scan Serial</button> -->
+       <input type="button" class="btn form-control" id="btn" value="Scan Code" />
+        
+        <p></p>
+        <button type="button" class="btn btn-danger form-control" id="resetBut" onclick="window.location.reload();">Reset Form</button>
+       
+       <p></p>
+        
+       <button id="subBut" type="button" class="btn btn-primary form-control" onclick="javascript:callSubmit();">Submit</button>
+        <p></p>
+       
+        <script src="https://mhg-heat-web/HEAT/Modules/HEATAPI/HEATApiClient?clientId=invwebapp&clientKey=G3Cm8doovLIL5iOFqITuDH64Btd/W9bwU7ajB3KJWRU="></script>
+       
+<script>
+        var _scannerIsRunning = false;
+
+        function startScanner() {
+            Quagga.init({
+                inputStream: {
+                    name: "Live",
+                    type: "LiveStream",
+                    target: document.querySelector('#scanner-container'),
+                    constraints: {
+                        width: 480,
+                        height: 320,
+                        facingMode: "environment"
+                    },
+                },
+                decoder: {
+                    readers: [
+                        "code_128_reader",
+                        "ean_reader",
+                        "ean_8_reader",
+                        "code_39_reader",
+                        "code_39_vin_reader",
+                        "codabar_reader",
+                        "upc_reader",
+                        "upc_e_reader",
+                        "i2of5_reader"
+                    ],
+                    debug: {
+                        showCanvas: true,
+                        showPatches: true,
+                        showFoundPatches: true,
+                        showSkeleton: true,
+                        showLabels: true,
+                        showPatchLabels: true,
+                        showRemainingPatchLabels: true,
+                        boxFromPatches: {
+                            showTransformed: true,
+                            showTransformedBox: true,
+                            showBB: true
+                        }
+                    }
+                },
+
+            }, function (err) {
+                if (err) {
+                    console.log(err);
+                    return
+                }
+
+                console.log("Initialization finished. Ready to start");
+                Quagga.start();
+
+                // Set flag to is running
+                _scannerIsRunning = true;
+            });
+
+            Quagga.onProcessed(function (result) {
+                var drawingCtx = Quagga.canvas.ctx.overlay,
+                drawingCanvas = Quagga.canvas.dom.overlay;
+
+                if (result) {
+                    if (result.boxes) {
+                        drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
+                        result.boxes.filter(function (box) {
+                            return box !== result.box;
+                        }).forEach(function (box) {
+                            Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
+                        });
+                    }
+
+                    if (result.box) {
+                        Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "#00F", lineWidth: 2 });
+                    }
+
+                    if (result.codeResult && result.codeResult.code) {
+                        Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'red', lineWidth: 3 });
+                    }
+                }
+            });
+
+            Quagga.onDetected(function (result) {
+               alert("Barcode detected and processed : [" + result.codeResult.code + "]", result);
+               document.getElementById('scanner-container').remove();
+            document.getElementById('btn').value = result.codeResult.code;
+            sCode = result.codeResult.code;
+            Quagga.stop();
+            });
+        }
+
+        // Start/stop scanner
+        document.getElementById("btn").addEventListener("click", function () {
+            if (_scannerIsRunning) {
+                Quagga.stop();
+            } else {
+                startScanner();
+            }
+        }, false);
+    </script>
+</body>
+
+</html>
