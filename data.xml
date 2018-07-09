@@ -1,9 +1,0 @@
-<?xml version="1.0" standalone="yes"?>
-<DataSet1 xmlns="http://tempuri.org/DataSet1.xsd">
-  <Stores>
-    <ID>wen002</ID>
-    <store>2</store>
-    <message>Test</message>
-    <level>1</level>
-  </Stores>
-</DataSet1>
